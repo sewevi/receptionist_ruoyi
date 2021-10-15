@@ -61,10 +61,11 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
-        <!-- 宁人-->
+        <!-- 新服务-->
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ningren-base</artifactId>
+            <artifactId>ruoyi-receptionist</artifactId>
+            <version>3.6.0</version>
         </dependency>
 
         <dependency>

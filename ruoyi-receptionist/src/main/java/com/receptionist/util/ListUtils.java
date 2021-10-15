@@ -1,8 +1,8 @@
 package com.receptionist.util;
 
-import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.receptionist.springboot.dto.page.BasePageDTO;
+import com.github.pagehelper.Page;
+import com.github.xiaoymin.knife4j.core.util.CollectionUtils;
+import com.receptionist.dto.page.BasePageDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 

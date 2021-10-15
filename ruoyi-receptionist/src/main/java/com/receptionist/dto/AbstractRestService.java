@@ -1,7 +1,7 @@
 package com.receptionist.dto;
 
-import com.receptionist.springboot.constant.Values;
-import com.receptionist.springboot.exception.ExceptionCode;
+import com.receptionist.constant.Values;
+import com.receptionist.exception.ExceptionCode;
 import lombok.extern.slf4j.Slf4j;
 
 /**
