@@ -1,0 +1,90 @@
+# 数据源配置
+spring:
+    datasource:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driverClassName: com.mysql.cj.jdbc.Driver
+        druid:
+            # 主库数据源
+            master:
+                url: jdbc:mysql://localhost:3306/ning_ren?characterEncoding=UTF-8&useSSL=false&useUnicode=true&serverTimezone=UTC
+                username: root
+                password: admin
+            # 从库数据源
+            slave:
+                # 从数据源开关/默认关闭
+                enabled: false
+                url:
+                username:
+                password:
+            # 初始连接数
+            initialSize: 5
+            # 最小连接池数量
+            minIdle: 10
+            # 最大连接池数量
+            maxActive: 20
+            # 配置获取连接等待超时的时间
+            maxWait: 60000
+            # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+            timeBetweenEvictionRunsMillis: 60000
+            # 配置一个连接在池中最小生存的时间，单位是毫秒
+            minEvictableIdleTimeMillis: 300000
+            # 配置一个连接在池中最大生存的时间，单位是毫秒
+            maxEvictableIdleTimeMillis: 900000
+            # 配置检测连接是否有效
+            validationQuery: SELECT 1 FROM DUAL
+            testWhileIdle: true
+            testOnBorrow: false
+            testOnReturn: false
+            webStatFilter:
+                enabled: true
+            statViewServlet:
+                enabled: true
+                # 设置白名单，不填则允许所有访问
+                allow:
+                url-pattern: /druid/*
+                # 控制台管理用户名和密码
+                login-username: ruoyi
+                login-password: 123456
+            filter:
+                stat:
+                    enabled: true
+                    # 慢SQL记录
+                    log-slow-sql: true
+                    slow-sql-millis: 1000
+                    merge-sql: true
+                wall:
+                    config:
+                        multi-statement-allow: true
+    # redis 配置
+    redis:
+        # 地址
+        host: localhost
+        # 端口，默认为6379
+        port: 6379
+        # 数据库索引
+        database: 0
+        # 密码
+        password:
+        # 连接超时时间
+        timeout: 10s
+        lettuce:
+            pool:
+                # 连接池中的最小空闲连接
+                min-idle: 0
+                # 连接池中的最大空闲连接
+                max-idle: 8
+                # 连接池的最大数据库连接数
+                max-active: 8
+                # #连接池最大阻塞等待时间（使用负值表示没有限制）
+                max-wait: -1ms
+
+ijpay:
+    alipay:
+        appId: 2021000117647601
+        privateKey: MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCBXuqv5SAGYWlyeNTjapKN0G1dFeJHYoJKuAcLjjlxWAqbHAig4+UqHkI8rufqXogZZo8x5duJpckI+lpAgrZZ5PijQ5ISRt5aus/7n6qDV/4e51lar9CCofZbzm7cn7Y2A5S+j3sTzb+tib61sBJxki03oB08LLKBfgKhXFpLtfxk219+G8DhfeWcsDo6V7vm4e0XPXNap41xNTvvPtFxWhccdl5sh2jV5vSZdT9+b70I6K45/NkTZvsIEvtuW/Lg/zIcQ1sdiF6vKMNH8PlEwu/E+A1Kxaf5qHrBtWzZbil3Wi2lO3rvjZYw9ONjBIH6oRUH5U1JQzGyauwdyWQjAgMBAAECggEAP7OK/91kbX/duj4BJZG+ZBHzJ9i0uM2qtjvzTB9V7ZeacVHWddKBbsHDf7nn/CFcBpXXgIxcE2UMnl0Xv5gdThpOy6Vj8ZfvuOEvtAikn1Pejzz/ZIYZt5kkg4QcVopV4DbXMRXZVqEC9uJSg4gVLNL7bN5sRssDgnuXs/iThZ97zBeqHL32PRCl3vRBCkyVZzWtT5+kCFKgaBsrKRWc0GuU1e7UnEJ+tLl6H8N8Xctk53kwslbY/mOHPUmmiDRtztT7bT39yhmTcITa5CaV0TGo7ts0gseILUQaolFR8P3GBcq/PrG7qWOQbLyfXYKr/PP7gDRuqnnOAVeMM9pawQKBgQDPbp72RJ2tNQF8b/TLKOwHMEGAo4VCkyuwQvrmTUYDvbsORo+YurNq0BMH+U/Y4InsGuFQP7xzxxBGR3shl5jHgRrsK5Vn0YJIFjRjhQcQe7QItnOQGnPrrG5WH2fWWXH4x5Bs2z8AESkyLcMbCe7OiVfKGhb7G4NhW+bjPETwUQKBgQCfqVZNjQLeWv2Rz6D0DbYGdRM6ERaMlLkNyeDCmWn2KPbHtX1WZqVGVLZ4VTalc86I9ENvVr0j97BSJ1ndB3a58Ad6ZEzz2f+6x4kDPO2revwyBSO5/OWVnRxhCHMX5tDV+8PPmLbTJ6LnmpCdGIqC6Tf2mVXPk8/2M4jUcrhEMwKBgQC/mNfvdNWHhSxIOkkL1lKdGS+HmIKgSbvS5StGyh1fm0JKH1bHpbvPbz4E4X2lP1Fl6jYvn498CWS45ZGQJ6yQqmmpt2AbMuN5njjpq5go23ohihUYB7cG+pA3sG6DCL9DIWH/ikuYzkEU/jv2n6ga0bVrEcokSveBWBfd0G+E4QKBgQCVRgQrY3BQJfA3WFEafIs3xFPikUFs1Euj6aAbMMYR4MDBfRyfID7b363uGXWLARgTkZROz2Ds9NHELYhmD2lgdFr5gjc0MhhXL+EYxulKzyRlO8roQ9r+o7J5wiWhLisINWggep5MEx3KvgcA6YXu2U96XmgNOBxSCmKehldjYwKBgQDAilsl5md7z08UqIzMWGzrsb3ihunjyhWZm4FryyG1OCW60eUv/h/ZLiFD1bv+U+XwJKf54JoiV7MZCpBWtiT0Mi/EPvvemjKfycCydyw3fjfFG9+LHGRQFWfAwdPRSKllc07L2YZCadcYb0p1boEaZIre/+RqZB7xqfVUD19fYw==
+        publicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAgV7qr+UgBmFpcnjU42qSjdBtXRXiR2KCSrgHC445cVgKmxwIoOPlKh5CPK7n6l6IGWaPMeXbiaXJCPpaQIK2WeT4o0OSEkbeWrrP+5+qg1f+HudZWq/QgqH2W85u3J+2NgOUvo97E82/rYm+tbAScZItN6AdPCyygX4CoVxaS7X8ZNtffhvA4X3lnLA6Ole75uHtFz1zWqeNcTU77z7RcVoXHHZebIdo1eb0mXU/fm+9COiuOfzZE2b7CBL7blvy4P8yHENbHYheryjDR/D5RMLvxPgNSsWn+ah6wbVs2W4pd1otpTt6742WMPTjYwSB+qEVB+VNSUMxsmrsHclkIwIDAQAB
+        appCertPath: F:/receptionist_ruoyi/alipayCer/appCertPublicKey_2021000117647601.crt
+        aliPayCertPath: F:/receptionist_ruoyi/alipayCer/alipayCertPublicKey_RSA2.crt
+        aliPayRootCertPath: F:/receptionist_ruoyi/alipayCer/alipayRootCert.crt
+        serverUrl: https://openapi.alipaydev.com/gateway.do
+        domain: 192.168.113.173:1399
