@@ -1,7 +1,6 @@
 package com.receptionist.util;
 
 import com.github.pagehelper.Page;
-import com.github.xiaoymin.knife4j.core.util.CollectionUtils;
 import com.receptionist.dto.page.BasePageDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -149,21 +148,6 @@ public class ListUtils {
         }
         BeanUtils.copyProperties(sourceObj, targetObj);
         return targetObj;
-    }
-
-    /**
-     * List之间转换
-     *
-     * @param sourceList
-     * @param targetClass
-     * @param <T>
-     * @return
-     */
-    public static <T> List<T> converList(List<?> sourceList, Class<T> targetClass) {
-        if (CollectionUtils.isEmpty(sourceList) || targetClass == null) {
-            return Collections.emptyList();
-        }
-        return sourceList.stream().map(sourceObj -> conver(sourceObj, targetClass)).collect(Collectors.toList());
     }
 
     /**
