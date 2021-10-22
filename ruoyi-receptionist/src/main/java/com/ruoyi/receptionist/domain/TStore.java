@@ -2,6 +2,7 @@ package com.ruoyi.receptionist.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ruoyi.common.annotation.Excel;
+import com.ruoyi.common.annotation.Excel.ColumnType;
 import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 
@@ -12,12 +13,12 @@ import lombok.Data;
  * @date 2021-10-17
  */
 @Data
-@TableName("t_store")
 public class TStore extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
+    @Excel(name = "仓库主键", cellType = ColumnType.NUMERIC, prompt = "仓库主键")
     private Long id;
 
     /** 材料名称 */

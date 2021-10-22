@@ -1,0 +1,279 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>注册页面</title>
+    <style type="text/css">
+	ul li{
+		list-style:none;
+	}
+       .mid{
+		   width:1250px;
+		   height:700px;
+		 background-image: url('img/intro-bg.jpg');
+		 background-size:cover;
+	   }
+	   .yes{
+		   width:1250px;
+		   height:30px;
+	   }
+	   .main-hotair{
+    max-width: 400px;
+    margin: 0 auto;
+    background: #fff;
+   padding: 20px 30px;
+   border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -o-border-radius: 6px;
+     /* opacity:0.6 ; */
+	 height:480px;
+	
+}
+.w3l-workinghny-form .logo {
+    text-align: center;
+}
+.slot-w3l-comingsoon,.slot-w3content{
+    text-align:left;
+}
+.slot-w3l-comingsoon h1 {
+    font-size: 60px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom:10px;
+    line-height: 70px;
+}
+.slot-w3l-comingsoon h3 {
+    font-family: 'Pacifico', cursive;
+    font-size:40px;
+    color: #fffffff7;
+    margin-bottom: 20px;
+    line-height: 60px;
+    display: inline-block;
+    font-weight: 400;
+}
+.slot-w3l-comingsoon p{
+   color: #dee3e4;
+   font-size: 22px;
+}
+.content-wthree h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #1b1c1b;
+    text-align: center;
+    margin-bottom: 30px;
+}
+.content-wthree input{
+    outline: none;
+    margin-bottom: 15px;
+    font-size: 16px;
+    color: #999;
+    text-align: left;
+    padding: 14px 20px;
+    width:250px;
+	margin-left:50px;
+    display: inline-block;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    background: #f8f9fa;
+    border: 1px solid #e8e9ea;
+    transition: .3s ease;
+    -webkit-transition: .3s ease;
+    -moz-transition: .3s ease;
+    -ms-transition: .3s ease;
+    -o-transition: .3s ease;
+    font-family: 'Hind', sans-serif;
+
+}
+.content-wthree textarea {
+    height:90px;
+}
+.content-wthree input:focus,textarea:focus {
+    background:transparent;
+    border: 1px solid #34bf49;
+}
+.content-wthree button {
+    font-size: 18px;
+    color: #fff;
+    width: 100%;
+    background: #34bf49;
+    border: none;
+    padding:14px 14px;
+    font-weight: 600;
+    transition: .3s ease;
+    -webkit-transition: .3s ease;
+    -moz-transition: .3s ease;
+    -ms-transition: .3s ease;
+    -o-transition: .3s ease;
+    display: inline-block;
+	width:150px;
+	height:52px;
+	float:left;
+	margin-right:25px;
+	margin-left:25px;
+}
+.content-wthree button:hover,.w3hny-subscribe-form button .btn .btn1:hover {
+    background:#229634;
+}
+p.continue {
+    margin: 30px 0 20px 0;
+}
+.w3hny-subscribe-form{
+    margin-top: 25px;
+    position: relative;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    max-width: 500px;
+    margin-right: auto;
+    margin-top:40px;
+}
+.w3hny-subscribe-form input{
+    font-size: 16px;
+    color: #999;
+    text-align: left;
+    padding: 18px 20px;
+    width: 100%;
+    outline: none;
+    background: #fff;
+    border: 1px solid #e8e9ea;
+    border-radius: 0;
+    color: var(--font-color);
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+	
+}
+.w3hny-subscribe-form button.btn .btn1 {
+    font-size: 18px;
+    color: #fff;
+    background: #34bf49;
+    border: none;
+   /* padding: 18px 20px; */
+    transition: .3s ease;
+    -webkit-transition: .3s ease;
+    -moz-transition: .3s ease;
+    -ms-transition: .3s ease;
+    -o-transition: .3s ease;
+    display: inline-block;
+    border-radius:6px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    padding: 0 25px;
+    font-size: 22px;
+}
+.social-login {
+    text-align: center;
+    margin-top:30px;
+}
+.social-login a span.fa {
+    color: #1a1b1a;
+    text-align: center;
+    font-size: 18px;
+    margin-right: 18px;
+}
+
+.social-login a span.fa:hover {
+    color: #34bf49;
+    transition: 0.5s ease;
+    -webkit-transition: 0.5s ease;
+    -o-transition: 0.5s ease;
+    -ms-transition: 0.5s ease;
+    -moz-transition: 0.5s ease;
+}
+.icon-user{
+      position: absolute;left: 0；z-index:5;margin-top: 8px;
+      background-image: url(img/login.png); /*引入图片图片*/
+      background-repeat: no-repeat; /*设置图片不重复*/
+      background-position: 0px 0px; /*图片显示的位置*/
+      width: 40px; /*设置图片显示的宽*/
+      height: 35px; /*图片显示的高*/
+}
+.icon-mm{
+      position: absolute;left: 0；z-index:5;margin-top: 8px;
+      background-image: url(img/mm.png); /*引入图片图片*/
+      background-repeat: no-repeat; /*设置图片不重复*/
+      background-position: 0px 0px; /*图片显示的位置*/
+      width: 40px; /*设置图片显示的宽*/
+      height: 35px; /*图片显示的高*/
+}
+.icon-mm1{
+      position: absolute;left: 0；z-index:5;margin-top: 8px;
+      background-image: url(img/mm1.png); /*引入图片图片*/
+      background-repeat: no-repeat; /*设置图片不重复*/
+      background-position: 0px 0px; /*图片显示的位置*/
+      width: 40px; /*设置图片显示的宽*/
+      height: 35px; /*图片显示的高*/
+}
+.icon-tel{
+      position: absolute;left: 0；z-index:5;margin-top: 8px;
+      background-image: url(img/tel.png); /*引入图片图片*/
+      background-repeat: no-repeat; /*设置图片不重复*/
+      background-position: 0px 0px; /*图片显示的位置*/
+      width: 40px; /*设置图片显示的宽*/
+      height: 35px; /*图片显示的高*/
+}
+.icon-qq{
+      position: absolute;left: 0；z-index:5;margin-top: 8px;
+      background-image: url(img/qq.png); /*引入图片图片*/
+      background-repeat: no-repeat; /*设置图片不重复*/
+      background-position: 0px 0px; /*图片显示的位置*/
+      width: 40px; /*设置图片显示的宽*/
+      height: 35px; /*图片显示的高*/
+}
+    </style>
+</head>
+<body>
+   <div class="mid">
+	   <div class="yes"></div>
+	   <div class="main-hotair">
+	       <div class="content-wthree">
+	           <h2>欢迎加入我们哟~~</h2>
+	           <form action="" method="post" class="signin-form">
+	               <div class="input-grids">
+					   <ul>
+						   <li>
+							    <i class="icon-user"></i>
+							   <input type="text" name="w3lName" id="w3lName" placeholder="昵称" class="contact-input" autofocus  required="" />
+						   </li>
+						   <li>
+							    <i class="icon-mm"></i>
+							    <input type="password" name="" id="" placeholder="密码" class="contact-input" autofocus/>
+						   </li>
+						   <li>
+							    <i class="icon-mm1"></i>
+							   <input type="password" name="" id="" placeholder="确认密码" class="contact-input" autofocus/>
+						   </li>
+						   <li>
+							    <i class="icon-tel"></i>
+							   <input type="text" name="tel" placeholder="电话"  class="contact-input" />
+						   </li>
+						   <li>
+							    <i class="icon-qq"></i>
+							   <input type="email" name="w3lSender" id="w3lSender" placeholder="邮箱" class="contact-input" autofocus
+							     required="" />
+						   </li>
+					   </ul>
+	                 
+					
+					 
+					<!-- <input type="radio" value="男"  name="sex" checked  class="contact-input" /> 
+					  <input type="radio" value="女"  name="sex"  class="contact-input"/> -->
+					 
+	                 
+	                   <!-- <textarea name="w3lMessage" id="w3lMessage" placeholder="Your Query*" required="" autofocus></textarea> -->
+	           </div>
+			   <div class="btn" >
+				   <button class="btn1" type="submit">注册</button>
+				    <button class="btn1" type="reset">重置</button>
+			   </div>
+	              
+	          
+	           </form>
+	          
+	       </div>
+	   
+	   </div>
+   </div>
+</body>
+</html>

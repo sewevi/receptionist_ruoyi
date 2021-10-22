@@ -68,7 +68,8 @@ spring:
     restart:
       # 热部署开关
       enabled: true
-
+  mvc:
+    static-path-pattern: /static/**
 
 # token配置
 token:
