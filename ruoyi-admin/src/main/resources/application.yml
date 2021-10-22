@@ -70,7 +70,6 @@ spring:
       enabled: true
   mvc:
     static-path-pattern: /static/**
-
 # token配置
 token:
     # 令牌自定义标识
