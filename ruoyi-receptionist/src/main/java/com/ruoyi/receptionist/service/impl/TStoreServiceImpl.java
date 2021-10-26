@@ -1,6 +1,9 @@
 package com.ruoyi.receptionist.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.receptionist.domain.TStore;
+import com.ruoyi.receptionist.domain.TStoreAllocation;
+import com.ruoyi.receptionist.mapper.TStoreAllocationMapper;
 import com.ruoyi.receptionist.mapper.TStoreMapper;
 import com.ruoyi.receptionist.service.ITStoreService;
 import com.ruoyi.common.utils.DateUtils;
@@ -16,7 +19,7 @@ import java.util.List;
  * @date 2021-10-17
  */
 @Service
-public class TStoreServiceImpl implements ITStoreService
+public class TStoreServiceImpl extends ServiceImpl<TStoreMapper, TStore> implements ITStoreService
 {
     @Autowired
     private TStoreMapper tStoreMapper;

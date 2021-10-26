@@ -33,4 +33,7 @@ public class TStore extends BaseEntity
     @Excel(name = "领用数量")
     private Long receive;
 
+    /** 图片地址 */
+    @Excel(name = "图片地址")
+    private String imgUrl;
 }

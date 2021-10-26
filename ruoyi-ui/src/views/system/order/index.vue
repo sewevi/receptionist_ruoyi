@@ -1,32 +1,24 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryForm" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="材料名称" prop="name">
+      <el-form-item label="标题" prop="title">
         <el-input
-          v-model="queryParams.name"
-          placeholder="请输入材料名称"
+          v-model="queryParams.title"
+          placeholder="请输入标题"
           clearable
           size="small"
           @keyup.enter.native="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="总数" prop="count">
-        <el-input
-          v-model="queryParams.count"
-          placeholder="请输入总数"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="订单状态" prop="status">
+        <el-select v-model="queryParams.status" placeholder="请选择订单状态" clearable size="small">
+          <el-option v-for="dict in orderStatus" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue" />
+        </el-select>
       </el-form-item>
-      <el-form-item label="领用数量" prop="receive">
-        <el-input
-          v-model="queryParams.receive"
-          placeholder="请输入领用数量"
-          clearable
-          size="small"
-          @keyup.enter.native="handleQuery"
-        />
+      <el-form-item label="订单类型" prop="type">
+        <el-select v-model="queryParams.type" placeholder="请选择订单类型" clearable size="small">
+          <el-option v-for="dict in orderType" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue"/>
+        </el-select>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
@@ -42,7 +34,7 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:store:add']"
+          v-hasPermi="['system:order:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -53,7 +45,7 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:store:edit']"
+          v-hasPermi="['system:order:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -64,7 +56,7 @@
           size="mini"
           :disabled="multiple"
           @click="handleDelete"
-          v-hasPermi="['system:store:remove']"
+          v-hasPermi="['system:order:remove']"
         >删除</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -75,19 +67,26 @@
           size="mini"
           :loading="exportLoading"
           @click="handleExport"
-          v-hasPermi="['system:store:export']"
+          v-hasPermi="['system:order:export']"
         >导出</el-button>
       </el-col>
       <right-toolbar :showSearch.sync="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="storeList" @selection-change="handleSelectionChange">
+    <el-table v-loading="loading" :data="orderList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="主键" align="center" prop="id" />
-      <el-table-column label="材料名称" align="center" prop="name" />
-      <el-table-column label="总数" align="center" prop="count" />
-      <el-table-column label="领用数量" align="center" prop="receive" />
-      <el-table-column label="图片地址" align="center" prop="imgUrl" />
+      <el-table-column label="标题" align="center" prop="title" />
+      <el-table-column label="内容" align="center" prop="content" />
+      <el-table-column label="地址" align="center" prop="address" />
+      <el-table-column label="图片地址" align="center" prop="img" />
+      <el-table-column label="订单状态" align="center" prop="status" />
+      <el-table-column label="订单类型" align="center" prop="type" />
+      <el-table-column label="收纳师主键" align="center" prop="receptionId" />
+      <el-table-column label="收纳师名称" align="center" prop="receptionName" />
+      <el-table-column label="收纳师联系方式" align="center" prop="receptionTel" />
+      <el-table-column label="评论" align="center" prop="comment" />
+      <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -95,14 +94,14 @@
             type="text"
             icon="el-icon-edit"
             @click="handleUpdate(scope.row)"
-            v-hasPermi="['system:store:edit']"
+            v-hasPermi="['system:order:edit']"
           >修改</el-button>
           <el-button
             size="mini"
             type="text"
             icon="el-icon-delete"
             @click="handleDelete(scope.row)"
-            v-hasPermi="['system:store:remove']"
+            v-hasPermi="['system:order:remove']"
           >删除</el-button>
         </template>
       </el-table-column>
@@ -116,20 +115,45 @@
       @pagination="getList"
     />
 
-    <!-- 添加或修改仓库对话框 -->
+    <!-- 添加或修改订单对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="材料名称" prop="name">
-          <el-input v-model="form.name" placeholder="请输入材料名称" />
+        <el-form-item label="标题" prop="title">
+          <el-input v-model="form.title" placeholder="请输入标题" />
         </el-form-item>
-        <el-form-item label="总数" prop="count">
-          <el-input v-model="form.count" placeholder="请输入总数" />
+        <el-form-item label="内容">
+          <editor v-model="form.content" :min-height="192"/>
         </el-form-item>
-        <el-form-item label="领用数量" prop="receive">
-          <el-input v-model="form.receive" placeholder="请输入领用数量" />
+        <el-form-item label="地址" prop="address">
+          <el-input v-model="form.address" placeholder="请输入地址" />
         </el-form-item>
-        <el-form-item label="图片地址" prop="imgUrl">
-          <el-input v-model="form.imgUrl" placeholder="请输入图片地址" />
+        <el-form-item label="图片地址" prop="img">
+          <el-input v-model="form.img" placeholder="请输入图片地址" />
+        </el-form-item>
+        <el-form-item label="订单状态(0:未开始 1:开始中 2:已完成)">
+          <el-radio-group v-model="form.status">
+            <el-radio label="1">请选择字典生成</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="订单类型(0:指定收纳师 1:抢单模式)" prop="type">
+          <el-select v-model="form.type" placeholder="请选择订单类型(0:指定收纳师 1:抢单模式)">
+            <el-option label="请选择字典生成" value="" />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="收纳师主键" prop="receptionId">
+          <el-input v-model="form.receptionId" placeholder="请输入收纳师主键" />
+        </el-form-item>
+        <el-form-item label="收纳师名称" prop="receptionName">
+          <el-input v-model="form.receptionName" placeholder="请输入收纳师名称" />
+        </el-form-item>
+        <el-form-item label="收纳师联系方式" prop="receptionTel">
+          <el-input v-model="form.receptionTel" placeholder="请输入收纳师联系方式" />
+        </el-form-item>
+        <el-form-item label="评论" prop="comment">
+          <el-input v-model="form.comment" placeholder="请输入评论" />
+        </el-form-item>
+        <el-form-item label="备注" prop="remark">
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -141,10 +165,10 @@
 </template>
 
 <script>
-import { listStore, getStore, delStore, addStore, updateStore, exportStore } from "@/api/system/store";
+import { listOrder, getOrder, delOrder, addOrder, updateOrder, exportOrder } from "@/api/system/order";
 
 export default {
-  name: "Store",
+  name: "Order",
   data() {
     return {
       // 遮罩层
@@ -161,8 +185,8 @@ export default {
       showSearch: true,
       // 总条数
       total: 0,
-      // 仓库表格数据
-      storeList: [],
+      // 订单表格数据
+      orderList: [],
       // 弹出层标题
       title: "",
       // 是否显示弹出层
@@ -171,26 +195,36 @@ export default {
       queryParams: {
         pageNum: 1,
         pageSize: 10,
-        name: null,
-        count: null,
-        receive: null,
+        title: null,
+        status: null,
+        type: null,
       },
       // 表单参数
       form: {},
       // 表单校验
       rules: {
-      }
+      },
+      // 订单状态字典值
+      orderStatus: [],
+      // 订单类型字典纸
+      orderType: []
     };
   },
   created() {
     this.getList();
+    this.getDicts("order_status").then(response => {
+      this.orderStatus = response.data;
+    });
+    this.getDicts("order_type").then(response => {
+      this.orderType = response.data;
+    })
   },
   methods: {
-    /** 查询仓库列表 */
+    /** 查询订单列表 */
     getList() {
       this.loading = true;
-      listStore(this.queryParams).then(response => {
-        this.storeList = response.rows;
+      listOrder(this.queryParams).then(response => {
+        this.orderList = response.rows;
         this.total = response.total;
         this.loading = false;
       });
@@ -204,10 +238,16 @@ export default {
     reset() {
       this.form = {
         id: null,
-        name: null,
-        count: null,
-        receive: null,
-        imgUrl: null,
+        title: null,
+        content: null,
+        address: null,
+        img: null,
+        status: "0",
+        type: null,
+        receptionId: null,
+        receptionName: null,
+        receptionTel: null,
+        comment: null,
         createBy: null,
         createTime: null,
         updateBy: null,
@@ -236,16 +276,16 @@ export default {
     handleAdd() {
       this.reset();
       this.open = true;
-      this.title = "添加仓库";
+      this.title = "添加订单";
     },
     /** 修改按钮操作 */
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
-      getStore(id).then(response => {
+      getOrder(id).then(response => {
         this.form = response.data;
         this.open = true;
-        this.title = "修改仓库";
+        this.title = "修改订单";
       });
     },
     /** 提交按钮 */
@@ -253,13 +293,13 @@ export default {
       this.$refs["form"].validate(valid => {
         if (valid) {
           if (this.form.id != null) {
-            updateStore(this.form).then(response => {
+            updateOrder(this.form).then(response => {
               this.msgSuccess("修改成功");
               this.open = false;
               this.getList();
             });
           } else {
-            addStore(this.form).then(response => {
+            addOrder(this.form).then(response => {
               this.msgSuccess("新增成功");
               this.open = false;
               this.getList();
@@ -271,12 +311,12 @@ export default {
     /** 删除按钮操作 */
     handleDelete(row) {
       const ids = row.id || this.ids;
-      this.$confirm('是否确认删除仓库编号为"' + ids + '"的数据项?', "警告", {
+      this.$confirm('是否确认删除订单编号为"' + ids + '"的数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(function() {
-          return delStore(ids);
+          return delOrder(ids);
         }).then(() => {
           this.getList();
           this.msgSuccess("删除成功");
@@ -285,13 +325,13 @@ export default {
     /** 导出按钮操作 */
     handleExport() {
       const queryParams = this.queryParams;
-      this.$confirm('是否确认导出所有仓库数据项?', "警告", {
+      this.$confirm('是否确认导出所有订单数据项?', "警告", {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           type: "warning"
         }).then(() => {
           this.exportLoading = true;
-          return exportStore(queryParams);
+          return exportOrder(queryParams);
         }).then(response => {
           this.download(response.msg);
           this.exportLoading = false;

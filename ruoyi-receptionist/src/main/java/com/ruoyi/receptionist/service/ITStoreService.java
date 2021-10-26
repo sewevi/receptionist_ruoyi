@@ -1,5 +1,7 @@
 package com.ruoyi.receptionist.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.ruoyi.receptionist.domain.TOrder;
 import com.ruoyi.receptionist.domain.TStore;
 
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
  * @author ruoyi
  * @date 2021-10-17
  */
-public interface ITStoreService 
+public interface ITStoreService extends IService<TStore>
 {
     /**
      * 查询仓库
