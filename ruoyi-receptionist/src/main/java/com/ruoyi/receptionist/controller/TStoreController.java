@@ -27,7 +27,6 @@ public class TStoreController extends BaseController
     /**
      * 查询仓库列表
      */
-    @PreAuthorize("@ss.hasPermi('system:store:list')")
     @GetMapping("/list")
     @ApiOperation(value = "查询仓库列表")
     public TableDataInfo list(TStore tStore)
@@ -40,7 +39,6 @@ public class TStoreController extends BaseController
     /**
      * 导出仓库列表
      */
-    @PreAuthorize("@ss.hasPermi('system:store:export')")
     @Log(title = "仓库", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     @ApiOperation(value = "导出仓库列表")
@@ -54,7 +52,6 @@ public class TStoreController extends BaseController
     /**
      * 获取仓库详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:store:query')")
     @GetMapping(value = "/{id}")
     @ApiOperation(value = "获取仓库详细信息")
     public AjaxResult getInfo(@PathVariable("id") Long id)
@@ -65,7 +62,6 @@ public class TStoreController extends BaseController
     /**
      * 新增仓库
      */
-    @PreAuthorize("@ss.hasPermi('system:store:add')")
     @Log(title = "仓库", businessType = BusinessType.INSERT)
     @PostMapping
     @ApiOperation(value = "新增仓库")
@@ -77,7 +73,6 @@ public class TStoreController extends BaseController
     /**
      * 修改仓库
      */
-    @PreAuthorize("@ss.hasPermi('system:store:edit')")
     @Log(title = "仓库", businessType = BusinessType.UPDATE)
     @PutMapping
     @ApiOperation(value = "修改仓库")
@@ -89,7 +84,6 @@ public class TStoreController extends BaseController
     /**
      * 删除仓库
      */
-    @PreAuthorize("@ss.hasPermi('system:store:remove')")
     @Log(title = "仓库", businessType = BusinessType.DELETE)
     @DeleteMapping("/{ids}")
     @ApiOperation(value = "删除仓库")

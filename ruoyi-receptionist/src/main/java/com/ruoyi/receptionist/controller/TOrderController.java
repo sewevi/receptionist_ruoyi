@@ -37,7 +37,6 @@ public class TOrderController extends BaseController
     /**
      * 查询订单列表
      */
-    @PreAuthorize("@ss.hasPermi('system:order:list')")
     @GetMapping("/list")
     public TableDataInfo list(TOrder tOrder)
     {
@@ -49,7 +48,6 @@ public class TOrderController extends BaseController
     /**
      * 导出订单列表
      */
-    @PreAuthorize("@ss.hasPermi('system:order:export')")
     @Log(title = "订单", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public AjaxResult export(TOrder tOrder)
@@ -62,7 +60,6 @@ public class TOrderController extends BaseController
     /**
      * 获取订单详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:order:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -72,7 +69,6 @@ public class TOrderController extends BaseController
     /**
      * 新增订单
      */
-    @PreAuthorize("@ss.hasPermi('system:order:add')")
     @Log(title = "订单", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TOrder tOrder)
@@ -83,7 +79,6 @@ public class TOrderController extends BaseController
     /**
      * 修改订单
      */
-    @PreAuthorize("@ss.hasPermi('system:order:edit')")
     @Log(title = "订单", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TOrder tOrder)
@@ -94,7 +89,6 @@ public class TOrderController extends BaseController
     /**
      * 删除订单
      */
-    @PreAuthorize("@ss.hasPermi('system:order:remove')")
     @Log(title = "订单", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

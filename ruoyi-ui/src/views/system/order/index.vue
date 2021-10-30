@@ -34,7 +34,6 @@
           icon="el-icon-plus"
           size="mini"
           @click="handleAdd"
-          v-hasPermi="['system:order:add']"
         >新增</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -45,7 +44,6 @@
           size="mini"
           :disabled="single"
           @click="handleUpdate"
-          v-hasPermi="['system:order:edit']"
         >修改</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -116,8 +114,8 @@
     />
 
     <!-- 添加或修改订单对话框 -->
-    <el-dialog :title="title" :visible.sync="open" width="500px" append-to-body>
-      <el-form ref="form" :model="form" :rules="rules" label-width="80px">
+    <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
+      <el-form ref="form" :model="form" :rules="rules" label-width="120px">
         <el-form-item label="标题" prop="title">
           <el-input v-model="form.title" placeholder="请输入标题" />
         </el-form-item>
@@ -130,14 +128,14 @@
         <el-form-item label="图片地址" prop="img">
           <el-input v-model="form.img" placeholder="请输入图片地址" />
         </el-form-item>
-        <el-form-item label="订单状态(0:未开始 1:开始中 2:已完成)">
-          <el-radio-group v-model="form.status">
-            <el-radio label="1">请选择字典生成</el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="订单类型(0:指定收纳师 1:抢单模式)" prop="type">
-          <el-select v-model="form.type" placeholder="请选择订单类型(0:指定收纳师 1:抢单模式)">
-            <el-option label="请选择字典生成" value="" />
+        <!--<el-form-item label="订单状态">-->
+          <!--<el-select v-model="form.status" >-->
+            <!--<el-option v-for="dict in orderStatus " :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue"/>-->
+          <!--</el-select>-->
+        <!--</el-form-item>-->
+        <el-form-item label="订单类型" prop="type">
+          <el-select v-model="form.type" placeholder="请选择订单类型">
+            <el-option v-for="dict in  orderType" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue"/>
           </el-select>
         </el-form-item>
         <el-form-item label="收纳师主键" prop="receptionId">

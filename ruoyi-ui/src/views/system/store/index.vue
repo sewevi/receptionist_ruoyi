@@ -129,7 +129,8 @@
           <el-input v-model="form.receive" placeholder="请输入领用数量" />
         </el-form-item>
         <el-form-item label="图片地址" prop="imgUrl">
-          <el-input v-model="form.imgUrl" placeholder="请输入图片地址" />
+          <imageUpload v-model="form.imageUrl" />
+          <!--<el-input v-model="form.imgUrl" placeholder="请输入图片地址" />-->
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -173,6 +174,7 @@ export default {
         pageSize: 10,
         name: null,
         count: null,
+        imageUrl: null,
         receive: null,
       },
       // 表单参数
