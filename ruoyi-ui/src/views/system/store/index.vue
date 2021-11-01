@@ -87,7 +87,11 @@
       <el-table-column label="材料名称" align="center" prop="name" />
       <el-table-column label="总数" align="center" prop="count" />
       <el-table-column label="领用数量" align="center" prop="receive" />
-      <el-table-column label="图片地址" align="center" prop="imgUrl" />
+      <el-table-column label="图片地址" align="center" prop="imgUrl" >
+        <template slot-scope="scope">
+          <img :src="scope.row.imgUrl" style="width: 100px; height: 100px;" />
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -129,8 +133,8 @@
           <el-input v-model="form.receive" placeholder="请输入领用数量" />
         </el-form-item>
         <el-form-item label="图片地址" prop="imgUrl">
-          <imageUpload v-model="form.imageUrl" />
-          <!--<el-input v-model="form.imgUrl" placeholder="请输入图片地址" />-->
+          <imageUpload v-model="form.imgUrl" />
+          <!--测试上传-->
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -174,7 +178,7 @@ export default {
         pageSize: 10,
         name: null,
         count: null,
-        imageUrl: null,
+        imgUrl: null,
         receive: null,
       },
       // 表单参数
@@ -239,6 +243,7 @@ export default {
       this.reset();
       this.open = true;
       this.title = "添加仓库";
+      this.form.imgUrl = '';
     },
     /** 修改按钮操作 */
     handleUpdate(row) {

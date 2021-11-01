@@ -38,6 +38,12 @@ module.exports = {
         pathRewrite: {
           ['^' + process.env.VUE_APP_BASE_API]: ''
         }
+      },
+      '/profile': {
+        target: 'http://localhost:3031/profile',
+        ws: true,
+        changeOrigin: true,
+        pathRewrite: { '/profile': '' }
       }
     },
     disableHostCheck: true
