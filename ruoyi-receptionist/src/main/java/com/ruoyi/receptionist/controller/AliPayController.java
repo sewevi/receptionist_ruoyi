@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
  * @date 2021/5/13
  */
 @RestController
-@RequestMapping("/api/aliPay")
+@RequestMapping("/aliPay")
 @Api(value = "支付宝相关内部操作接口", tags = "支付宝相关内部操作接口")
 public class AliPayController extends AbstractRestService {
 
