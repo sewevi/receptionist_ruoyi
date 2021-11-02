@@ -1,7 +1,9 @@
 package com.ruoyi.receptionist.controller;
 
 import com.alipay.api.AlipayApiException;
+import com.alipay.api.domain.AlipayTradeCreateModel;
 import com.alipay.api.domain.AlipayTradeQueryModel;
+import com.alipay.api.response.AlipayTradeCreateResponse;
 import com.ijpay.alipay.AliPayApi;
 import com.ijpay.alipay.AliPayApiConfig;
 import com.ijpay.alipay.AliPayApiConfigKit;
@@ -25,6 +27,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/aliPay")
 @Api(value = "支付宝相关内部操作接口", tags = "支付宝相关内部操作接口")
 public class AliPayController extends AbstractRestService {
+
+    /**
+     * 证书模式
+     */
+    private final static String NOTIFY_URL = "/aliPay/cert_notify_url";
 
     @Autowired
     private AliPayBaseConfig aliPayBean;
@@ -96,19 +103,20 @@ public class AliPayController extends AbstractRestService {
     @ApiOperation(value = "交易查询")
     @ResponseBody
     public String tradeQuery(@RequestParam(required = false, name = "outTradeNo") String outTradeNo, @RequestParam(required = false, name = "tradeNo") String tradeNo) {
-        try {
-            AlipayTradeQueryModel model = new AlipayTradeQueryModel();
-            if (StringUtils.isNotEmpty(outTradeNo)) {
-                model.setOutTradeNo(outTradeNo);
-            }
-            if (StringUtils.isNotEmpty(tradeNo)) {
-                model.setTradeNo(tradeNo);
-            }
-            return AliPayApi.tradeQueryToResponse(model).getBody();
-        } catch (AlipayApiException e) {
-            e.printStackTrace();
-        }
-        return null;
+        return aliPayService.tradeQuery(outTradeNo);
+//        try {
+//            AlipayTradeQueryModel model = new AlipayTradeQueryModel();
+//            if (StringUtils.isNotEmpty(outTradeNo)) {
+//                model.setOutTradeNo(outTradeNo);
+//            }
+//            if (StringUtils.isNotEmpty(tradeNo)) {
+//                model.setTradeNo(tradeNo);
+//            }
+//            return AliPayApi.tradeQueryToResponse(model).getBody();
+//        } catch (AlipayApiException e) {
+//            e.printStackTrace();
+//        }
+//        return null;
     }
 
     /**
@@ -125,4 +133,5 @@ public class AliPayController extends AbstractRestService {
         }
         return this.buildErrorResult("error");
     }
+
 }

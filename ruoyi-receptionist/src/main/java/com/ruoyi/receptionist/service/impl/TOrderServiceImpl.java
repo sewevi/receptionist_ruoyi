@@ -67,6 +67,9 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
         return tOrderMapper.insertTOrder(tOrder);
     }
 
+    public static void main(String[] args) {
+        System.out.println(StringUtils.getOutTradeNo());
+    }
     /**
      * 修改订单
      * 

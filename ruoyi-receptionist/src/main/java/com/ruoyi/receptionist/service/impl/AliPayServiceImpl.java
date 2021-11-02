@@ -2,9 +2,11 @@ package com.ruoyi.receptionist.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.alipay.api.AlipayApiException;
 import com.alipay.api.domain.AlipayFundAccountQueryModel;
 import com.alipay.api.domain.AlipayFundTransToaccountTransferModel;
 import com.alipay.api.domain.AlipayTradePrecreateModel;
+import com.alipay.api.domain.AlipayTradeQueryModel;
 import com.ijpay.alipay.AliPayApi;
 import com.ruoyi.receptionist.config.AliPayBaseConfig;
 import com.ruoyi.receptionist.entity.alipay.AliPayDefaultResponse;
@@ -89,6 +91,30 @@ public class AliPayServiceImpl implements AliPayService {
         try {
             return AliPayApi.transferToResponse(model).getBody();
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 二维码生成账单必须扫过后才会生成
+     * 订单查询 成功为TRADE_SUCCESS
+     * 未付款为 WAIT_BUYER_PAY
+     * 不存在为null
+     * @param outTradeNo
+     * @return
+     */
+    @Override
+    public String tradeQuery(String outTradeNo) {
+        try {
+            AlipayTradeQueryModel model = new AlipayTradeQueryModel();
+            if (com.ruoyi.common.utils.StringUtils.isNotEmpty(outTradeNo)) {
+                model.setOutTradeNo(outTradeNo);
+            }
+            String resultStr =  AliPayApi.tradeQueryToResponse(model).getBody();
+            JSONObject jsonObject = JSONObject.parseObject(resultStr);
+            return jsonObject.getJSONObject("alipay_trade_query_response").getString("trade_status");
+        } catch (AlipayApiException e) {
             e.printStackTrace();
         }
         return null;

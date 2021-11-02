@@ -28,4 +28,9 @@ public interface AliPayService {
      * @return
      */
     String transfer(String paymentValue);
+
+    /**
+     * 交易查询
+     */
+    String tradeQuery(String outTradeNo);
 }
