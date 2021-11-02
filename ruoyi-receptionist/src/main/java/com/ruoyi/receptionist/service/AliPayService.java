@@ -20,7 +20,7 @@ public interface AliPayService {
      * @param paymentValue
      * @return
      */
-    String tradePreCreatePay(String paymentValue);
+    String tradePreCreatePay(String paymentValue,String outTradeNo);
 
     /**
      * 单笔转账到支付宝账户

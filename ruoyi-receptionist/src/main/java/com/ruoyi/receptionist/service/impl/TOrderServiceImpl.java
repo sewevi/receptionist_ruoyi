@@ -8,7 +8,9 @@ import com.ruoyi.receptionist.domain.TOrder;
 import com.ruoyi.receptionist.domain.TStoreAllocation;
 import com.ruoyi.receptionist.mapper.TOrderMapper;
 import com.ruoyi.receptionist.mapper.TStoreAllocationMapper;
+import com.ruoyi.receptionist.service.AliPayService;
 import com.ruoyi.receptionist.service.ITOrderService;
+import com.ruoyi.receptionist.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 /**
@@ -23,6 +25,8 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
     @Autowired
     private TOrderMapper tOrderMapper;
 
+    @Autowired
+    private AliPayService aliPayService;
     /**
      * 查询订单
      * 
@@ -57,6 +61,9 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
     public int insertTOrder(TOrder tOrder)
     {
         tOrder.setCreateTime(DateUtils.getNowDate());
+        // 生成订单编码
+        String outTradeNo = StringUtils.getOutTradeNo();
+        tOrder.setOutTradeNo(outTradeNo);
         return tOrderMapper.insertTOrder(tOrder);
     }
 

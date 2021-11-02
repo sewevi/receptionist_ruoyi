@@ -50,7 +50,7 @@ public class AliPayServiceImpl implements AliPayService {
      * @return
      */
     @Override
-    public String tradePreCreatePay(String paymentValue) {
+    public String tradePreCreatePay(String paymentValue,String outTradeNo) {
         String subject = "Javen 支付宝扫码支付测试";
         String totalAmount = paymentValue;
         String storeId = "2088621955689180";
@@ -61,8 +61,6 @@ public class AliPayServiceImpl implements AliPayService {
         model.setTotalAmount(totalAmount);
         model.setStoreId(storeId);
         model.setTimeoutExpress("5m");
-        String outTradeNo = StringUtils.getOutTradeNo();
-        System.out.println("===="+outTradeNo);
         model.setOutTradeNo(outTradeNo);
         try {
             String resultStr = AliPayApi.tradePrecreatePayToResponse(model, notifyUrl).getBody();

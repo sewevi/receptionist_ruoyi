@@ -79,9 +79,10 @@ public class AliPayController extends AbstractRestService {
      */
     @GetMapping(value = "/tradePreCreatePay")
     @ApiOperation(value = "扫码支付")
-    public ResponseResult<String> tradePreCreatePay(@RequestParam(name = "paymentValue") String paymentValue) {
+    public ResponseResult<String> tradePreCreatePay(@RequestParam(name = "paymentValue") String paymentValue
+    ,@RequestParam("outTradeNo") String outTradeNo){
         try {
-            return this.buildSuccesssResult(aliPayService.tradePreCreatePay(paymentValue));
+            return this.buildSuccesssResult(aliPayService.tradePreCreatePay(paymentValue,outTradeNo));
         } catch (Exception e) {
             e.printStackTrace();
         }
