@@ -1,8 +1,11 @@
 package com.ruoyi.receptionist.controller;
 
 import com.alipay.api.AlipayApiException;
+import com.alipay.api.domain.AlipayTradeQueryModel;
+import com.ijpay.alipay.AliPayApi;
 import com.ijpay.alipay.AliPayApiConfig;
 import com.ijpay.alipay.AliPayApiConfigKit;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.receptionist.config.AliPayBaseConfig;
 import com.ruoyi.receptionist.dto.AbstractRestService;
 import com.ruoyi.receptionist.dto.ResponseResult;
@@ -83,6 +86,28 @@ public class AliPayController extends AbstractRestService {
             e.printStackTrace();
         }
         return this.buildErrorResult("error");
+    }
+
+    /**
+     * 交易查询
+     */
+    @GetMapping(value = "/tradeQuery")
+    @ApiOperation(value = "交易查询")
+    @ResponseBody
+    public String tradeQuery(@RequestParam(required = false, name = "outTradeNo") String outTradeNo, @RequestParam(required = false, name = "tradeNo") String tradeNo) {
+        try {
+            AlipayTradeQueryModel model = new AlipayTradeQueryModel();
+            if (StringUtils.isNotEmpty(outTradeNo)) {
+                model.setOutTradeNo(outTradeNo);
+            }
+            if (StringUtils.isNotEmpty(tradeNo)) {
+                model.setTradeNo(tradeNo);
+            }
+            return AliPayApi.tradeQueryToResponse(model).getBody();
+        } catch (AlipayApiException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**

@@ -61,7 +61,9 @@ public class AliPayServiceImpl implements AliPayService {
         model.setTotalAmount(totalAmount);
         model.setStoreId(storeId);
         model.setTimeoutExpress("5m");
-        model.setOutTradeNo(StringUtils.getOutTradeNo());
+        String outTradeNo = StringUtils.getOutTradeNo();
+        System.out.println("===="+outTradeNo);
+        model.setOutTradeNo(outTradeNo);
         try {
             String resultStr = AliPayApi.tradePrecreatePayToResponse(model, notifyUrl).getBody();
             JSONObject jsonObject = JSONObject.parseObject(resultStr);
