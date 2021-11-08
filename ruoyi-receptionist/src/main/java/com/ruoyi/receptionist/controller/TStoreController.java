@@ -60,7 +60,7 @@ public class TStoreController extends BaseController
     }
 
     /**
-     * 新增仓库
+     * 新增仓库测试上传
      */
     @Log(title = "仓库", businessType = BusinessType.INSERT)
     @PostMapping
