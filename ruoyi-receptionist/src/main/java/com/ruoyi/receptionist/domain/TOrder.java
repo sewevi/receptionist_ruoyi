@@ -34,10 +34,6 @@ public class TOrder extends BaseEntity
     @Excel(name = "内容")
     private String content;
 
-    /** 订单二维码 */
-    @Excel(name = "订单二维码")
-    private String outTradeQr;
-
     /** 地址 */
     @Excel(name = "地址")
     private String address;
@@ -46,13 +42,13 @@ public class TOrder extends BaseEntity
     @Excel(name = "收纳时长(小时单位)")
     private BigDecimal orderTime;
 
-    /** 金额 */
-    @Excel(name = "金额")
-    private BigDecimal amount;
-
     /** 图片地址 */
     @Excel(name = "图片地址")
     private String img;
+
+    /** 金额 */
+    @Excel(name = "金额")
+    private BigDecimal amount;
 
     /** 订单状态(0:未开始 1:开始中 2:已完成) */
     @Excel(name = "订单状态(0:未开始 1:开始中 2:已完成)")
@@ -70,6 +66,10 @@ public class TOrder extends BaseEntity
     @Excel(name = "收纳师名称")
     private String receptionName;
 
+    /** 付款状态(0:未付款 1:已付款) */
+    @Excel(name = "付款状态(0:未付款 1:已付款)")
+    private String payStatus;
+
     /** 收纳师联系方式 */
     @Excel(name = "收纳师联系方式")
     private String receptionTel;
@@ -77,4 +77,5 @@ public class TOrder extends BaseEntity
     /** 评论 */
     @Excel(name = "评论")
     private String comment;
+
 }
