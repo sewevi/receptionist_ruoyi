@@ -11,14 +11,15 @@
         <result property="content"    column="content"    />
         <result property="address"    column="address"    />
         <result property="orderTime"    column="order_time"    />
-        <result property="img"    column="img"    />
+        <result property="reserveTime"    column="reserve_time"    />
         <result property="amount"    column="amount"    />
+        <result property="img"    column="img"    />
         <result property="status"    column="status"    />
         <result property="type"    column="type"    />
         <result property="receptionId"    column="reception_id"    />
         <result property="receptionName"    column="reception_name"    />
-        <result property="payStatus"    column="pay_status"    />
         <result property="receptionTel"    column="reception_tel"    />
+        <result property="payStatus"    column="pay_status"    />
         <result property="comment"    column="comment"    />
         <result property="createBy"    column="create_by"    />
         <result property="createTime"    column="create_time"    />
@@ -28,7 +29,7 @@
     </resultMap>
 
     <sql id="selectTOrderVo">
-        select id, title, out_trade_no, content, address, order_time, img, amount, status, type, reception_id, reception_name, pay_status, reception_tel, comment, create_by, create_time, update_by, update_time, remark from t_order
+        select id, title, out_trade_no, content, address, order_time, reserve_time, amount, img, status, type, reception_id, reception_name, reception_tel, pay_status, comment, create_by, create_time, update_by, update_time, remark from t_order
     </sql>
 
     <select id="selectTOrderList" parameterType="TOrder" resultMap="TOrderResult">
@@ -37,6 +38,7 @@
             <if test="title != null  and title != ''"> and title = #{title}</if>
             <if test="outTradeNo != null  and outTradeNo != ''"> and out_trade_no = #{outTradeNo}</if>
             <if test="orderTime != null "> and order_time = #{orderTime}</if>
+            <if test="reserveTime != null "> and reserve_time = #{reserveTime}</if>
             <if test="amount != null "> and amount = #{amount}</if>
             <if test="status != null  and status != ''"> and status = #{status}</if>
             <if test="type != null  and type != ''"> and type = #{type}</if>
@@ -57,14 +59,15 @@
             <if test="content != null">content,</if>
             <if test="address != null">address,</if>
             <if test="orderTime != null">order_time,</if>
-            <if test="img != null">img,</if>
+            <if test="reserveTime != null">reserve_time,</if>
             <if test="amount != null">amount,</if>
+            <if test="img != null">img,</if>
             <if test="status != null">status,</if>
             <if test="type != null">type,</if>
             <if test="receptionId != null">reception_id,</if>
             <if test="receptionName != null">reception_name,</if>
-            <if test="payStatus != null">pay_status,</if>
             <if test="receptionTel != null">reception_tel,</if>
+            <if test="payStatus != null">pay_status,</if>
             <if test="comment != null">comment,</if>
             <if test="createBy != null">create_by,</if>
             <if test="createTime != null">create_time,</if>
@@ -78,14 +81,15 @@
             <if test="content != null">#{content},</if>
             <if test="address != null">#{address},</if>
             <if test="orderTime != null">#{orderTime},</if>
-            <if test="img != null">#{img},</if>
+            <if test="reserveTime != null">#{reserveTime},</if>
             <if test="amount != null">#{amount},</if>
+            <if test="img != null">#{img},</if>
             <if test="status != null">#{status},</if>
             <if test="type != null">#{type},</if>
             <if test="receptionId != null">#{receptionId},</if>
             <if test="receptionName != null">#{receptionName},</if>
-            <if test="payStatus != null">#{payStatus},</if>
             <if test="receptionTel != null">#{receptionTel},</if>
+            <if test="payStatus != null">#{payStatus},</if>
             <if test="comment != null">#{comment},</if>
             <if test="createBy != null">#{createBy},</if>
             <if test="createTime != null">#{createTime},</if>
@@ -103,14 +107,15 @@
             <if test="content != null">content = #{content},</if>
             <if test="address != null">address = #{address},</if>
             <if test="orderTime != null">order_time = #{orderTime},</if>
-            <if test="img != null">img = #{img},</if>
+            <if test="reserveTime != null">reserve_time = #{reserveTime},</if>
             <if test="amount != null">amount = #{amount},</if>
+            <if test="img != null">img = #{img},</if>
             <if test="status != null">status = #{status},</if>
             <if test="type != null">type = #{type},</if>
             <if test="receptionId != null">reception_id = #{receptionId},</if>
             <if test="receptionName != null">reception_name = #{receptionName},</if>
-            <if test="payStatus != null">pay_status = #{payStatus},</if>
             <if test="receptionTel != null">reception_tel = #{receptionTel},</if>
+            <if test="payStatus != null">pay_status = #{payStatus},</if>
             <if test="comment != null">comment = #{comment},</if>
             <if test="createBy != null">create_by = #{createBy},</if>
             <if test="createTime != null">create_time = #{createTime},</if>
