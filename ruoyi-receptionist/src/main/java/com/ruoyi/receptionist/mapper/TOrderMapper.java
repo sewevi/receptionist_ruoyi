@@ -11,7 +11,7 @@ import java.util.List;
  * @author ruoyi
  * @date 2021-10-26
  */
-public interface TOrderMapper extends BaseMapper<TOrder>
+public interface TOrderMapper
 {
     /**
      * 查询订单

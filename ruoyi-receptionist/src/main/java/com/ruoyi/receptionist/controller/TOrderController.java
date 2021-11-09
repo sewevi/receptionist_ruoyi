@@ -4,6 +4,9 @@ import java.util.List;
 
 import com.ruoyi.receptionist.domain.TOrder;
 import com.ruoyi.receptionist.service.ITOrderService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +32,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  */
 @RestController
 @RequestMapping("/api/order")
+@Api(value = "订单内部操作接口", tags = "订单相关内部操作接口")
 public class TOrderController extends BaseController
 {
     @Autowired
@@ -38,6 +42,7 @@ public class TOrderController extends BaseController
      * 查询订单列表
      */
     @GetMapping("/list")
+    @ApiOperation(value = "查询订单列表")
     public TableDataInfo list(TOrder tOrder)
     {
         startPage();
@@ -94,5 +99,14 @@ public class TOrderController extends BaseController
     public AjaxResult remove(@PathVariable Long[] ids)
     {
         return toAjax(tOrderService.deleteTOrderByIds(ids));
+    }
+
+    /**
+     * 修改订单状态判断订单是否付款
+     */
+    @GetMapping(value = "judgeOrderPay")
+    @ApiOperation(value = "修改订单状态判断订单是否付款")
+    public AjaxResult judgeOrderPay(){
+        return toAjax(tOrderService.judgeOrderPay());
     }
 }

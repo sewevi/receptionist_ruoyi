@@ -36,27 +36,37 @@
           @click="handleAdd"
         >新增</el-button>
       </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="el-icon-edit"
-          size="mini"
-          :disabled="single"
-          @click="handleUpdate"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="el-icon-delete"
-          size="mini"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['system:order:remove']"
-        >删除</el-button>
-      </el-col>
+      <!--<el-col :span="1.5">-->
+        <!--<el-button-->
+          <!--type="success"-->
+          <!--plain-->
+          <!--icon="el-icon-edit"-->
+          <!--size="mini"-->
+          <!--:disabled="single"-->
+          <!--@click="handleUpdate"-->
+        <!--&gt;修改</el-button>-->
+      <!--</el-col>-->
+      <!--<el-col :span="1.5">-->
+        <!--<el-button-->
+          <!--type="success"-->
+          <!--plain-->
+          <!--icon="el-icon-edit"-->
+          <!--size="mini"-->
+          <!--:disabled="single"-->
+          <!--@click="handleView"-->
+        <!--&gt;查看</el-button>-->
+      <!--</el-col>-->
+      <!--<el-col :span="1.5">-->
+        <!--<el-button-->
+          <!--type="danger"-->
+          <!--plain-->
+          <!--icon="el-icon-delete"-->
+          <!--size="mini"-->
+          <!--:disabled="multiple"-->
+          <!--@click="handleDelete"-->
+          <!--v-hasPermi="['system:order:remove']"-->
+        <!--&gt;删除</el-button>-->
+      <!--</el-col>-->
       <el-col :span="1.5">
         <el-button
           type="warning"
@@ -73,18 +83,27 @@
 
     <el-table v-loading="loading" :data="orderList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主键" align="center" prop="id" />
+      <el-table-column label="序号" align="center" prop="id" />
       <el-table-column label="标题" align="center" prop="title" />
-      <el-table-column label="内容" align="center" prop="content" />
+      <!--<el-table-column label="内容" align="center" prop="content" />-->
       <el-table-column label="地址" align="center" prop="address" />
-      <el-table-column label="图片地址" align="center" prop="img" />
-      <el-table-column label="订单状态" align="center" prop="status" />
-      <el-table-column label="订单类型" align="center" prop="type" />
-      <el-table-column label="收纳师主键" align="center" prop="receptionId" />
+      <!--<el-table-column label="图片地址" align="center" prop="img" />-->
+      <el-table-column label="订单状态" align="center" prop="status" >
+        <template slot-scope="scope">
+        <span>{{ scope.row.status === '0' ? "未开始": scope.row.status === '1' ? "开始中" : "已完成" }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="付款状态" align="center" prop="status" >
+        <template slot-scope="scope">
+          <span>{{ scope.row.payStatus === '0' ? "未付款" : "已付款" }}</span>
+        </template>
+      </el-table-column>
+      <!--<el-table-column label="订单类型" align="center" prop="type" />-->
+      <!--<el-table-column label="收纳师主键" align="center" prop="receptionId" />-->
       <el-table-column label="收纳师名称" align="center" prop="receptionName" />
       <el-table-column label="收纳师联系方式" align="center" prop="receptionTel" />
-      <el-table-column label="评论" align="center" prop="comment" />
-      <el-table-column label="备注" align="center" prop="remark" />
+      <!--<el-table-column label="评论" align="center" prop="comment" />-->
+      <!--<el-table-column label="备注" align="center" prop="remark" />-->
       <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
         <template slot-scope="scope">
           <el-button
@@ -94,6 +113,13 @@
             @click="handleUpdate(scope.row)"
             v-hasPermi="['system:order:edit']"
           >修改</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-view"
+            @click="view(scope.row)"
+            v-hasPermi="['system:order:edit']"
+          >查看</el-button>
           <el-button
             size="mini"
             type="text"
@@ -116,42 +142,39 @@
     <!-- 添加或修改订单对话框 -->
     <el-dialog :title="title" :visible.sync="open" width="700px" append-to-body>
       <el-form ref="form" :model="form" :rules="rules" label-width="120px">
-        <el-form-item label="标题" prop="title">
-          <el-input v-model="form.title" placeholder="请输入标题" />
+        <el-form-item label="标题" prop="title" >
+          <el-input v-model="form.title" placeholder="请输入标题" :disabled="type === 'view'"/>
         </el-form-item>
         <el-form-item label="内容">
-          <editor v-model="form.content" :min-height="192"/>
+          <el-input  v-model="form.content" :min-height="192" :disabled="type === 'view'"/>
         </el-form-item>
         <el-form-item label="地址" prop="address">
-          <el-input v-model="form.address" placeholder="请输入地址" />
+          <el-input v-model="form.address" placeholder="请输入地址" :disabled="type === 'view'"/>
         </el-form-item>
         <el-form-item label="图片地址" prop="img">
-          <el-input v-model="form.img" placeholder="请输入图片地址" />
+          <el-input v-model="form.img" placeholder="请输入图片地址" :disabled="type === 'view'"/>
         </el-form-item>
         <!--<el-form-item label="订单状态">-->
-          <!--<el-select v-model="form.status" >-->
-            <!--<el-option v-for="dict in orderStatus " :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue"/>-->
-          <!--</el-select>-->
+        <!--<el-select v-model="form.status" >-->
+        <!--<el-option v-for="dict in orderStatus " :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue"/>-->
+        <!--</el-select>-->
         <!--</el-form-item>-->
         <el-form-item label="订单类型" prop="type">
           <el-select v-model="form.type" placeholder="请选择订单类型">
-            <el-option v-for="dict in  orderType" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue"/>
+            <el-option v-for="dict in  orderType" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue" :disabled="type === 'view'" />
           </el-select>
         </el-form-item>
-        <el-form-item label="收纳师主键" prop="receptionId">
-          <el-input v-model="form.receptionId" placeholder="请输入收纳师主键" />
-        </el-form-item>
         <el-form-item label="收纳师名称" prop="receptionName">
-          <el-input v-model="form.receptionName" placeholder="请输入收纳师名称" />
+          <el-input v-model="form.receptionName" placeholder="请输入收纳师名称" :disabled="type === 'view'" />
         </el-form-item>
         <el-form-item label="收纳师联系方式" prop="receptionTel">
-          <el-input v-model="form.receptionTel" placeholder="请输入收纳师联系方式" />
+          <el-input v-model="form.receptionTel" placeholder="请输入收纳师联系方式":disabled="type === 'view'" />
         </el-form-item>
         <el-form-item label="评论" prop="comment">
-          <el-input v-model="form.comment" placeholder="请输入评论" />
+          <el-input v-model="form.comment" placeholder="请输入评论" :disabled="type === 'view'" />
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
+          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" :disabled="type === 'view'" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -194,8 +217,13 @@ export default {
         pageNum: 1,
         pageSize: 10,
         title: null,
+        outTradeNo: null,
+        orderTime: null,
+        time: null,
+        amount: null,
         status: null,
         type: null,
+        payStatus: null,
       },
       // 表单参数
       form: {},
@@ -204,6 +232,7 @@ export default {
       },
       // 订单状态字典值
       orderStatus: [],
+      type: '',
       // 订单类型字典纸
       orderType: []
     };
@@ -237,14 +266,19 @@ export default {
       this.form = {
         id: null,
         title: null,
+        outTradeNo: null,
         content: null,
         address: null,
+        orderTime: null,
+        time: null,
+        amount: null,
         img: null,
         status: "0",
         type: null,
         receptionId: null,
         receptionName: null,
         receptionTel: null,
+        payStatus: "0",
         comment: null,
         createBy: null,
         createTime: null,
@@ -280,10 +314,22 @@ export default {
     handleUpdate(row) {
       this.reset();
       const id = row.id || this.ids
+      this.type = 'edit'
       getOrder(id).then(response => {
         this.form = response.data;
         this.open = true;
         this.title = "修改订单";
+      });
+    },
+    /** 修改按钮操作 */
+    view(row) {
+      this.reset();
+      const id = row.id || this.ids
+      this.type = 'view'
+      getOrder(id).then(response => {
+        this.form = response.data;
+        this.open = true;
+        this.title = "查看订单";
       });
     },
     /** 提交按钮 */
