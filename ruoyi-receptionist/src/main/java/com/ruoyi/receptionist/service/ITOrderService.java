@@ -11,7 +11,7 @@ import java.util.List;
  * @author ruoyi
  * @date 2021-10-26
  */
-public interface ITOrderService extends IService<TOrder>
+public interface ITOrderService
 {
     /**
      * 查询订单
@@ -60,4 +60,9 @@ public interface ITOrderService extends IService<TOrder>
      * @return 结果
      */
     public int deleteTOrderById(Long id);
+
+    /**
+     * 修改订单状态判断订单是否付款
+     */
+    int judgeOrderPay();
 }

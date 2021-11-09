@@ -1,7 +1,11 @@
 package com.ruoyi.receptionist.service.impl;
 
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.receptionist.domain.TOrder;
@@ -10,6 +14,7 @@ import com.ruoyi.receptionist.mapper.TOrderMapper;
 import com.ruoyi.receptionist.mapper.TStoreAllocationMapper;
 import com.ruoyi.receptionist.service.AliPayService;
 import com.ruoyi.receptionist.service.ITOrderService;
+import com.ruoyi.receptionist.util.ListUtils;
 import com.ruoyi.receptionist.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,13 +25,16 @@ import org.springframework.stereotype.Service;
  * @date 2021-10-26
  */
 @Service
-public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> implements ITOrderService
+public class TOrderServiceImpl implements ITOrderService
 {
     @Autowired
     private TOrderMapper tOrderMapper;
 
     @Autowired
     private AliPayService aliPayService;
+
+    public static final String PAY_SUCCESS = "TRADE_SUCCESS";
+    public static final BigDecimal DEFAULT_AMOUNT = new BigDecimal(15);
     /**
      * 查询订单
      * 
@@ -48,6 +56,7 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
     @Override
     public List<TOrder> selectTOrderList(TOrder tOrder)
     {
+        judgeOrderPay();
         return tOrderMapper.selectTOrderList(tOrder);
     }
 
@@ -64,12 +73,13 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
         // 生成订单编码
         String outTradeNo = StringUtils.getOutTradeNo();
         tOrder.setOutTradeNo(outTradeNo);
+        // 默认未付款
+        tOrder.setPayStatus("0");
+        // 默认订单状态未开始
+        tOrder.setStatus("0");
         return tOrderMapper.insertTOrder(tOrder);
     }
 
-    public static void main(String[] args) {
-        System.out.println(StringUtils.getOutTradeNo());
-    }
     /**
      * 修改订单
      * 
@@ -80,6 +90,11 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
     public int updateTOrder(TOrder tOrder)
     {
         tOrder.setUpdateTime(DateUtils.getNowDate());
+        if (tOrder.getOrderTime() != null){
+            tOrder.setAmount(tOrder.getOrderTime().multiply(DEFAULT_AMOUNT).setScale(
+                    2,BigDecimal.ROUND_HALF_UP));
+        }
+
         return tOrderMapper.updateTOrder(tOrder);
     }
 
@@ -105,5 +120,22 @@ public class TOrderServiceImpl extends ServiceImpl<TOrderMapper, TOrder> impleme
     public int deleteTOrderById(Long id)
     {
         return tOrderMapper.deleteTOrderById(id);
+    }
+
+    @Override
+    public int judgeOrderPay() {
+        TOrder tOrder = new TOrder();
+        tOrder.setStatus("2");
+        List<TOrder> ordersList = tOrderMapper.selectTOrderList(tOrder);
+        if (ListUtils.isNotEmpty(ordersList)){
+            ordersList.stream().forEach(o->{
+                String payStatus = aliPayService.tradeQuery(o.getOutTradeNo());
+                if (PAY_SUCCESS.equals(payStatus)){
+                    o.setPayStatus("1");
+                    tOrderMapper.updateTOrder(o);
+                }
+            });
+        }
+        return 0;
     }
 }
