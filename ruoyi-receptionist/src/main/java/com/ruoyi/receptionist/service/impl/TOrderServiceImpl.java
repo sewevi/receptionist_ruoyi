@@ -10,14 +10,19 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.receptionist.domain.TOrder;
 import com.ruoyi.receptionist.domain.TStoreAllocation;
+import com.ruoyi.receptionist.dto.UserOrderSaveParams;
 import com.ruoyi.receptionist.mapper.TOrderMapper;
 import com.ruoyi.receptionist.mapper.TStoreAllocationMapper;
 import com.ruoyi.receptionist.service.AliPayService;
 import com.ruoyi.receptionist.service.ITOrderService;
+import com.ruoyi.receptionist.service.ITStoreAllocationService;
 import com.ruoyi.receptionist.util.ListUtils;
 import com.ruoyi.receptionist.util.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 /**
  * 订单Service业务层处理
  * 
@@ -32,6 +37,9 @@ public class TOrderServiceImpl implements ITOrderService
 
     @Autowired
     private AliPayService aliPayService;
+
+    @Autowired
+    private ITStoreAllocationService allocationService;
 
     public static final String PAY_SUCCESS = "TRADE_SUCCESS";
     public static final BigDecimal DEFAULT_AMOUNT = new BigDecimal(15);
@@ -78,6 +86,21 @@ public class TOrderServiceImpl implements ITOrderService
         // 默认订单状态未开始
         tOrder.setStatus("0");
         return tOrderMapper.insertTOrder(tOrder);
+    }
+
+    @Override
+    @Transactional
+    public int saveUserOrder(UserOrderSaveParams params) {
+        TOrder order = new TOrder();
+        BeanUtils.copyProperties(params,order);
+        insertTOrder(order);
+        if (ListUtils.isNotEmpty(params.getTStoreAllocations())){
+            params.getTStoreAllocations().stream().forEach(o->{
+                o.setOrderId(order.getId());
+            });
+        }
+        allocationService.saveBatchTStoreAllocation(params.getTStoreAllocations());
+        return 1;
     }
 
     /**

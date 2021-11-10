@@ -83,7 +83,7 @@
 
     <el-table v-loading="loading" :data="orderList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" align="center" prop="id" />
+      <el-table-column type="index" label="序号" align="center" prop="id" />
       <el-table-column label="标题" align="center" prop="title" />
       <!--<el-table-column label="内容" align="center" prop="content" />-->
       <el-table-column label="地址" align="center" prop="address" />
@@ -151,8 +151,9 @@
         <el-form-item label="地址" prop="address">
           <el-input v-model="form.address" placeholder="请输入地址" :disabled="type === 'view'"/>
         </el-form-item>
-        <el-form-item label="图片地址" prop="img">
-          <el-input v-model="form.img" placeholder="请输入图片地址" :disabled="type === 'view'"/>
+        <el-form-item label="图片地址" prop="img" >
+          <el-image :src="form.img" v-model="form.img" placeholder="请输入图片地址" :disabled="type === 'view'"
+          style="height: 175px;width: 175px"/>
         </el-form-item>
         <!--<el-form-item label="订单状态">-->
         <!--<el-select v-model="form.status" >-->
@@ -178,7 +179,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="submitForm">确 定</el-button>
+        <el-button type="primary" @click="submitForm" v-if="type !== 'view'">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
       </div>
     </el-dialog>

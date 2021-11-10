@@ -83,10 +83,15 @@
 
     <el-table v-loading="loading" :data="storeList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="主键" align="center" prop="id" />
+      <el-table-column type="index" label="主键" align="center" prop="id" />
       <el-table-column label="材料名称" align="center" prop="name" />
       <el-table-column label="总数" align="center" prop="count" />
       <el-table-column label="领用数量" align="center" prop="receive" />
+      <el-table-column label="实际数量" align="center" prop="countReceive">
+        <template slot-scope="scope">
+          <span>{{scope.row.count-scope.row.receive}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="图片地址" align="center" prop="imgUrl" >
         <template slot-scope="scope">
           <img :src="scope.row.imgUrl" style="width: 100px; height: 100px;" />
@@ -218,6 +223,7 @@ export default {
         createTime: null,
         updateBy: null,
         updateTime: null,
+        countReceive:null,
         remark: null
       };
       this.resetForm("form");

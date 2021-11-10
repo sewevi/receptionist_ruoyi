@@ -1,5 +1,7 @@
 package com.ruoyi.receptionist.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -18,6 +20,7 @@ public class TStoreAllocation extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /** 订单主键 */
@@ -34,67 +37,6 @@ public class TStoreAllocation extends BaseEntity
 
     /** 商品购买个数 */
     @Excel(name = "商品购买个数")
-    private String storeCount;
+    private Long storeCount;
 
-    public void setId(Long id) 
-    {
-        this.id = id;
-    }
-
-    public Long getId() 
-    {
-        return id;
-    }
-    public void setOrderId(Long orderId) 
-    {
-        this.orderId = orderId;
-    }
-
-    public Long getOrderId() 
-    {
-        return orderId;
-    }
-    public void setStoreId(Long storeId) 
-    {
-        this.storeId = storeId;
-    }
-
-    public Long getStoreId() 
-    {
-        return storeId;
-    }
-    public void setStoreName(String storeName) 
-    {
-        this.storeName = storeName;
-    }
-
-    public String getStoreName() 
-    {
-        return storeName;
-    }
-    public void setStoreCount(String storeCount) 
-    {
-        this.storeCount = storeCount;
-    }
-
-    public String getStoreCount() 
-    {
-        return storeCount;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("orderId", getOrderId())
-            .append("storeId", getStoreId())
-            .append("storeName", getStoreName())
-            .append("storeCount", getStoreCount())
-            .append("createBy", getCreateBy())
-            .append("createTime", getCreateTime())
-            .append("updateBy", getUpdateBy())
-            .append("updateTime", getUpdateTime())
-            .append("remark", getRemark())
-            .toString();
-    }
 }

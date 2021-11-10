@@ -1,5 +1,7 @@
 package com.ruoyi.receptionist.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -22,6 +24,7 @@ public class TOrder extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /** 标题 */
