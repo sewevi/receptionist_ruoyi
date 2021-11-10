@@ -23,6 +23,15 @@ const user = {
     SET_ROLES: (state, roles) => {
       state.roles = roles
     },
+    SET_USER_ID: (state, userId) => {
+      state.userId = userId
+    },
+    SET_USER_NICK_NAME: (state, userNickName) => {
+      state.userNickName = userNickName
+    },
+    SET_USER_TEL: (state, userTel) => {
+      state.userTel = userTel
+    },
     SET_PERMISSIONS: (state, permissions) => {
       state.permissions = permissions
     }
@@ -60,6 +69,9 @@ const user = {
           }
           commit('SET_NAME', user.userName)
           commit('SET_AVATAR', avatar)
+          commit('SET_USER_ID',user.userId)
+          commit('SET_USER_TEL',user.phonenumber)
+          commit('SET_USER_NICK_NAME',user.nickName)
           resolve(res)
         }).catch(error => {
           reject(error)
