@@ -3,6 +3,7 @@ package com.ruoyi.receptionist.controller;
 import java.util.List;
 
 import com.ruoyi.receptionist.domain.TOrder;
+import com.ruoyi.receptionist.dto.UserOrderSaveParams;
 import com.ruoyi.receptionist.service.ITOrderService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
@@ -79,6 +80,18 @@ public class TOrderController extends BaseController
     public AjaxResult add(@RequestBody TOrder tOrder)
     {
         return toAjax(tOrderService.insertTOrder(tOrder));
+    }
+
+    /**
+     * 用户新增订单
+     */
+
+    @Log(title = "订单", businessType = BusinessType.INSERT)
+    @PostMapping(value = "saveUserOrder")
+    @ApiOperation(value = "用户新增订单")
+    public AjaxResult saveUserOrder(@RequestBody UserOrderSaveParams tOrder)
+    {
+        return toAjax(tOrderService.saveUserOrder(tOrder));
     }
 
     /**

@@ -2,6 +2,7 @@ package com.ruoyi.receptionist.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.ruoyi.receptionist.domain.TOrder;
+import com.ruoyi.receptionist.dto.UserOrderSaveParams;
 
 import java.util.List;
 
@@ -36,6 +37,13 @@ public interface ITOrderService
      * @return 结果
      */
     public int insertTOrder(TOrder tOrder);
+
+    /**
+     * 新增订单
+     * @param params
+     * @return
+     */
+    int saveUserOrder(UserOrderSaveParams params);
 
     /**
      * 修改订单

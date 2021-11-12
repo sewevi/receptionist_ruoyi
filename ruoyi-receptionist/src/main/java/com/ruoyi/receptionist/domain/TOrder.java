@@ -1,14 +1,18 @@
 package com.ruoyi.receptionist.domain;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 订单对象 t_order
@@ -22,6 +26,7 @@ public class TOrder extends BaseEntity
     private static final long serialVersionUID = 1L;
 
     /** 主键 */
+    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     /** 标题 */
@@ -45,7 +50,8 @@ public class TOrder extends BaseEntity
     private BigDecimal orderTime;
 
     /** 预约时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "预约时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date reserveTime;
 
@@ -85,6 +91,7 @@ public class TOrder extends BaseEntity
     @Excel(name = "评论")
     private String comment;
 
+    private List<TStoreAllocation> allocationList;
 
     /** 用户主键 */
     @Excel(name = "用户主键")

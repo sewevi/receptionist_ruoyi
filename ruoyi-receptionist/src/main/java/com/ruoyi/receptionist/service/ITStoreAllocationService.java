@@ -39,6 +39,10 @@ public interface ITStoreAllocationService extends IService<TStoreAllocation>
     public int insertTStoreAllocation(TStoreAllocation tStoreAllocation);
 
     /**
+     * 批量仓库调拨
+     */
+    int saveBatchTStoreAllocation(List<TStoreAllocation> tStoreAllocation);
+    /**
      * 修改仓库调拨记录
      * 
      * @param tStoreAllocation 仓库调拨记录
