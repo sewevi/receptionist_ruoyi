@@ -85,4 +85,17 @@ public class TOrder extends BaseEntity
     @Excel(name = "评论")
     private String comment;
 
+
+    /** 用户主键 */
+    @Excel(name = "用户主键")
+    private Long userId;
+
+    /** 用户昵称 */
+    @Excel(name = "用户昵称")
+    private String userNick;
+
+    /** 用户联系方式 */
+    @Excel(name = "用户联系方式")
+    private String userTel;
+
 }
