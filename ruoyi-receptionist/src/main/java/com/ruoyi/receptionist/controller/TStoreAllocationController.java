@@ -37,7 +37,6 @@ public class TStoreAllocationController extends BaseController
     /**
      * 查询仓库调拨记录列表
      */
-    @PreAuthorize("@ss.hasPermi('system:allocation:list')")
     @GetMapping("/list")
     public TableDataInfo list(TStoreAllocation tStoreAllocation)
     {
@@ -49,7 +48,6 @@ public class TStoreAllocationController extends BaseController
     /**
      * 导出仓库调拨记录列表
      */
-    @PreAuthorize("@ss.hasPermi('system:allocation:export')")
     @Log(title = "仓库调拨记录", businessType = BusinessType.EXPORT)
     @GetMapping("/export")
     public AjaxResult export(TStoreAllocation tStoreAllocation)
@@ -62,7 +60,6 @@ public class TStoreAllocationController extends BaseController
     /**
      * 获取仓库调拨记录详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:allocation:query')")
     @GetMapping(value = "/{id}")
     public AjaxResult getInfo(@PathVariable("id") Long id)
     {
@@ -72,7 +69,6 @@ public class TStoreAllocationController extends BaseController
     /**
      * 新增仓库调拨记录
      */
-    @PreAuthorize("@ss.hasPermi('system:allocation:add')")
     @Log(title = "仓库调拨记录", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody TStoreAllocation tStoreAllocation)
@@ -83,7 +79,6 @@ public class TStoreAllocationController extends BaseController
     /**
      * 修改仓库调拨记录
      */
-    @PreAuthorize("@ss.hasPermi('system:allocation:edit')")
     @Log(title = "仓库调拨记录", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody TStoreAllocation tStoreAllocation)
@@ -94,7 +89,6 @@ public class TStoreAllocationController extends BaseController
     /**
      * 删除仓库调拨记录
      */
-    @PreAuthorize("@ss.hasPermi('system:allocation:remove')")
     @Log(title = "仓库调拨记录", businessType = BusinessType.DELETE)
 	@DeleteMapping("/{ids}")
     public AjaxResult remove(@PathVariable Long[] ids)

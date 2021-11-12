@@ -15,11 +15,11 @@
           <el-option v-for="dict in orderStatus" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue" />
         </el-select>
       </el-form-item>
-      <el-form-item label="订单类型" prop="type">
-        <el-select v-model="queryParams.type" placeholder="请选择订单类型" clearable size="small">
-          <el-option v-for="dict in orderType" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue"/>
-        </el-select>
-      </el-form-item>
+      <!--<el-form-item label="订单类型" prop="type">-->
+        <!--<el-select v-model="queryParams.type" placeholder="请选择订单类型" clearable size="small">-->
+          <!--<el-option v-for="dict in orderType" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue"/>-->
+        <!--</el-select>-->
+      <!--</el-form-item>-->
       <el-form-item>
         <el-button type="primary" icon="el-icon-search" size="mini" @click="handleQuery">搜索</el-button>
         <el-button icon="el-icon-refresh" size="mini" @click="resetQuery">重置</el-button>
@@ -134,6 +134,13 @@
             @click="receiveUpdate(scope.row)"
             v-hasPermi="['system:order']"
           >领取订单</el-button>
+          <el-button
+            size="mini"
+            type="text"
+            icon="el-icon-delete"
+            @click="finishUpdate(scope.row)"
+            v-hasPermi="['system:order']"
+          >完成订单</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -153,7 +160,7 @@
           <el-input v-model="form.title" placeholder="请输入标题" :disabled="type === 'view'"/>
         </el-form-item>
         <el-form-item label="内容">
-          <el-input  v-model="form.content" :min-height="192" :disabled="type === 'view'"/>
+          <el-input  v-model="form.content" type="textarea" :min-height="192" :disabled="type === 'view'"/>
         </el-form-item>
         <el-form-item label="地址" prop="address">
           <el-input v-model="form.address" placeholder="请输入地址" :disabled="type === 'view' "/>
@@ -167,11 +174,11 @@
         <!--<el-option v-for="dict in orderStatus " :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue"/>-->
         <!--</el-select>-->
         <!--</el-form-item>-->
-        <el-form-item label="订单类型" prop="type">
-          <el-select v-model="form.type" placeholder="请选择订单类型">
-            <el-option v-for="dict in  orderType" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue" :disabled="type === 'view'" />
-          </el-select>
-        </el-form-item>
+        <!--<el-form-item label="订单类型" prop="type">-->
+          <!--<el-select v-model="form.type" placeholder="请选择订单类型">-->
+            <!--<el-option v-for="dict in  orderType" :key="dict.dictValue" :label="dict.dictLabel" :value="dict.dictValue" :disabled="type === 'view'" />-->
+          <!--</el-select>-->
+        <!--</el-form-item>-->
         <el-form-item label="预约时间" prop="reserveTime"  >
           <el-input v-model="moment(form.reserveTime).format('YYYY-MM-DD HH:mm:ss')" :disabled="true"/>
         </el-form-item>
@@ -187,10 +194,32 @@
         <el-form-item label="备注" prop="remark">
           <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" :disabled="type === 'view'" />
         </el-form-item>
+        <el-card style="margin-top: 20px;">
+          <div slot="header" class="clearfix">
+            <span>收纳周边购买记录</span>
+          </div>
+          <el-table v-loading="loading" :data="allocationList">
+            <el-table-column label="收纳周边名称" align="center" prop="storeName" />
+            <el-table-column label="收纳周边购买个数" align="center" prop="storeCount" />
+          </el-table>
+        </el-card>
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="submitForm" v-if="type !== 'view'">确 定</el-button>
         <el-button @click="cancel">取 消</el-button>
+      </div>
+    </el-dialog>
+
+    <!-- 完成订单-->
+    <el-dialog title="完成订单" :visible.sync="finishOpen" width="40%" append-to-body>
+      <el-form ref="finishForm" :model="finishForm"  label-width="110px">
+        <el-form-item label="完成时间" prop="remark">
+          <el-input style="width: 100%" v-model="finishForm.orderTime" placeholder="请输入完成时间(单位小时)" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer" style="text-align: center;">
+        <el-button @click="closeFinishOpen">取 消</el-button>
+        <el-button type="primary" @click="submitFinishForm">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -198,6 +227,8 @@
 
 <script>
   import { listOrder, getOrder, delOrder, addOrder, updateOrder, exportOrder } from "@/api/system/order";
+  import { listAllocation, getAllocation, delAllocation, addAllocation, updateAllocation, exportAllocation } from "@/api/system/allocation";
+
   import moment from "moment"
 
   export default {
@@ -224,6 +255,8 @@
         title: "",
         // 是否显示弹出层
         open: false,
+        // 是否显示完成订单弹出框
+        finishOpen: false,
         // 查询参数
         queryParams: {
           pageNum: 1,
@@ -242,9 +275,15 @@
         // 表单校验
         rules: {
         },
+        // 完成订单表单校验
+        finishForm: {
+          status: 2
+        },
         // 订单状态字典值
         orderStatus: [],
         type: '',
+        // 收纳周边列表
+        allocationList:[],
         // 订单类型字典纸
         orderType: []
       };
@@ -349,16 +388,43 @@
           this.getList();
         })
       },
+      /** 弹出完成订单窗口*/
+      finishUpdate(row){
+        this.finishOpen = true;
+        this.id = row !== null ? row.id : this.form.id
+      },
+      /** 关闭完成订单窗口*/
+      closeFinishOpen(){
+        this.finishOpen = false;
+        this.reset();
+      },
+      /** 确认完成订单窗口*/
+      submitFinishForm(){
+        this.$refs["finishForm"].validate(_ => {
+          console.log(this.id);
+          this.finishForm.id = this.id;
+          updateOrder(this.finishForm).then(response => {
+            this.msgSuccess("领取成功");
+            this.getList();
+          })
+        });
+      },
       /** 修改按钮操作 */
       view(row) {
         this.reset();
-        const id = row.id || this.ids
-        this.type = 'view'
+        const id = row.id || this.ids;
+        this.type = 'view';
         getOrder(id).then(response => {
           this.form = response.data;
           this.open = true;
           this.title = "查看订单";
         });
+        listAllocation({
+          orderId: row.id
+        }).then(response => {
+          this.allocationList = response.rows;
+        });
+
       },
       /** 提交按钮 */
       submitForm() {

@@ -64,7 +64,7 @@ public class TOrderServiceImpl implements ITOrderService
     @Override
     public List<TOrder> selectTOrderList(TOrder tOrder)
     {
-        judgeOrderPay();
+//        judgeOrderPay();
         return tOrderMapper.selectTOrderList(tOrder);
     }
 

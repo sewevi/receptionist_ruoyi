@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 订单对象 t_order
@@ -90,4 +91,5 @@ public class TOrder extends BaseEntity
     @Excel(name = "评论")
     private String comment;
 
+    private List<TStoreAllocation> allocationList;
 }

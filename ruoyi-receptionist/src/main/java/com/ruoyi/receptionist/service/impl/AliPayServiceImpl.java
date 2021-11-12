@@ -111,9 +111,11 @@ public class AliPayServiceImpl implements AliPayService {
             if (com.ruoyi.common.utils.StringUtils.isNotEmpty(outTradeNo)) {
                 model.setOutTradeNo(outTradeNo);
             }
-            String resultStr =  AliPayApi.tradeQueryToResponse(model).getBody();
+            String resultStr = AliPayApi.tradeQueryToResponse(model).getBody();
             JSONObject jsonObject = JSONObject.parseObject(resultStr);
-            return jsonObject.getJSONObject("alipay_trade_query_response").getString("trade_status");
+            if (StringUtils.isNotBlank(jsonObject.getJSONObject("alipay_trade_query_response").getString("trade_status"))){
+                return jsonObject.getJSONObject("alipay_trade_query_response").getString("trade_status");
+            }
         } catch (AlipayApiException e) {
             e.printStackTrace();
         }
